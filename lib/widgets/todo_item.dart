@@ -32,6 +32,14 @@ class _TodoItemState extends State<TodoItem> {
   }
 
   @override
+  void didUpdateWidget(TodoItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!isEditing) {
+      editController.text = widget.todo.title;
+    }
+  }
+
+  @override
   void dispose() {
     editController.dispose();
     super.dispose();

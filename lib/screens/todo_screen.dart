@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/models/todo.dart';
 import 'package:todo_list/screens/todo_detail_screen.dart';
-import 'package:todo_list/widgets/todo_item.dart';
 import 'package:todo_list/widgets/todo_list_view.dart';
 import '../widgets/todo_inputfield.dart';
 
