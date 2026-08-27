@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_list/models/todo.dart';
+import 'package:todo_list/models/todo_list.dart';
 import 'package:todo_list/screens/todo_detail_screen.dart';
 import 'package:todo_list/widgets/todo_list_view.dart';
 import '../widgets/todo_inputfield.dart';
@@ -31,23 +33,31 @@ class _TodoScreenState extends State<TodoScreen> {
   void addTodo() {
     final text = controller.text.trim();
     if (text.isEmpty) return; // basic validation, from your original spec
-
-    setState(() {
-      todoList.add(
-        Todo(
-          id: DateTime.now().toString(), // quick unique-ish id for now
-          title: text,
-          isComplete: false,
-        ),
-      );
-      controller.clear();
-    });
+    Provider.of<TodoList>(context, listen: false).add(
+      Todo(
+        id: DateTime.now().toString(), // quick unique-ish id for now
+        title: text,
+        isComplete: false,
+      ),
+    );
+    // setState(() {
+    //   todoList.add(
+    //     Todo(
+    //       id: DateTime.now().toString(), // quick unique-ish id for now
+    //       title: text,
+    //       isComplete: false,
+    //     ),
+    //   );
+    // });
+    controller.clear();
   }
 
   void editTodo(Todo todo, String newTitle) {
-    setState(() {
-      todo.title = newTitle;
-    });
+    todo.title = newTitle;
+    Provider.of<TodoList>(context, listen: false).update(todo);
+    // setState(() {
+    //   todo.title = newTitle;
+    // });
   }
 
   void handleToggle(Todo todo) {
@@ -57,9 +67,10 @@ class _TodoScreenState extends State<TodoScreen> {
   }
 
   void deleteItem(Todo todo) {
-    setState(() {
-      todoList.remove(todo);
-    });
+    Provider.of<TodoList>(context, listen: false).delete(todo);
+    // setState(() {
+    //   todoList.remove(todo);
+    // });
   }
 
   void onTap(Todo todo) async {
