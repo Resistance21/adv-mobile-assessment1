@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:todo_list/models/todo.dart';
@@ -9,6 +10,7 @@ class SqliteDataSource implements DataSource {
   Future initalise() async {
     _database = await openDatabase(
       join(await getDatabasesPath(), 'todo_data.db'),
+
       version: 1,
       onCreate: (db, version) {
         return db.execute(
@@ -16,6 +18,8 @@ class SqliteDataSource implements DataSource {
         );
       },
     );
+    final String path = join(await getDatabasesPath(), 'todo_data.db');
+    debugPrint('SQLite database path: $path');
   }
 
   static Future<DataSource> createAsync() async {

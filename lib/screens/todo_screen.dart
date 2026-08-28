@@ -14,15 +14,13 @@ class TodoScreen extends StatefulWidget {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
-  Todo todo = Todo(id: '1', title: 'item 1', isComplete: false);
-  List<Todo> todoList = [];
   final TextEditingController controller = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    todoList.add(todo);
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   todoList.add(todo);
+  // }
 
   @override
   void dispose() {
@@ -97,12 +95,16 @@ class _TodoScreenState extends State<TodoScreen> {
             submit: addTodo,
             fieldHint: 'Add a Todo',
           ),
-          TodoListView(
-            todoList: todoList,
-            toggle: handleToggle,
-            delete: deleteItem,
-            edit: editTodo,
-            onTap: onTap,
+          Consumer<TodoList>(
+            builder: (context, model, child) {
+              return TodoListView(
+                todoList: model.todos,
+                toggle: handleToggle,
+                delete: deleteItem,
+                edit: editTodo,
+                onTap: onTap,
+              );
+            },
           ),
         ],
       ),

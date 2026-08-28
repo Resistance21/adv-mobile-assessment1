@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_list/models/todo.dart';
+import 'package:todo_list/models/todo_list.dart';
 import 'package:todo_list/widgets/todo_item.dart';
 
 class TodoListView extends StatelessWidget {
@@ -21,19 +23,23 @@ class TodoListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.builder(
-        itemCount: todoList.length,
-        itemBuilder: (context, index) {
-          final todo = todoList[index];
-          return TodoItem(
-            key: ValueKey(todo.id),
-            todo: todo,
-            onToggle: () => toggle(todo),
-            onDelete: () => delete(todo),
-            onEdit: edit,
-            onTap: () => onTap(todo),
-          );
-        },
+      child: RefreshIndicator(
+        onRefresh: () =>
+            Provider.of<TodoList>(context, listen: false).refresh(),
+        child: ListView.builder(
+          itemCount: todoList.length,
+          itemBuilder: (context, index) {
+            final todo = todoList[index];
+            return TodoItem(
+              key: ValueKey(todo.id),
+              todo: todo,
+              onToggle: () => toggle(todo),
+              onDelete: () => delete(todo),
+              onEdit: edit,
+              onTap: () => onTap(todo),
+            );
+          },
+        ),
       ),
     );
   }
