@@ -7,40 +7,42 @@ import 'package:todo_list/services/data_source.dart';
 
 class TodoList extends ChangeNotifier {
   final List<Todo> _todos = [];
-  //final DataSource dataSource = Get.find();
+  final DataSource dataSource = Get.find();
 
   UnmodifiableListView<Todo> get todos => UnmodifiableListView(_todos);
 
   int get todoCount => _todos.length;
 
-  void add(Todo todo) {
-    _todos.add(todo);
-    notifyListeners();
+  Future<void> add(Todo todo) async {
+    //_todos.add(todo);
+    debugPrint('ADDING TO DO');
+    await dataSource.add(todo);
+    await refresh();
   }
 
-  void removeAll() {
-    _todos.clear();
-    notifyListeners();
+  // Future<void> removeAll() async {
+  //   //_todos.clear();
+  //   await dataSource.da;
+  //   notifyListeners();
+  // }
+
+  Future<void> delete(Todo todo) async {
+    await dataSource.delete(todo);
+    //_todos.removeWhere((e) => e.id == todo.id);
+    await refresh();
   }
 
-  void delete(Todo todo) {
-    _todos.removeWhere((e) => e.id == todo.id);
-    notifyListeners();
-  }
-
-  void update(Todo todo) {
-    //DataSource dataSource = Get.find();
-    //await dataSource.edit(todo);
+  Future<void> update(Todo todo) async {
+    await dataSource.edit(todo);
     int index = _todos.indexWhere((element) => element.id == todo.id);
     _todos[index] = todo;
-    notifyListeners();
+    await refresh();
   }
 
   Future<List<Todo>> refresh() async {
-    // DataSource dataSource = Get.find();
-    // _todos.clear();
-    // _todos.addAll(await dataSource.browse());
-    // return _todos;
+    _todos.clear();
+    _todos.addAll(await dataSource.browse());
+    notifyListeners();
     return _todos;
   }
 }

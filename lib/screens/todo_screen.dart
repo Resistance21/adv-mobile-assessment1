@@ -16,11 +16,11 @@ class TodoScreen extends StatefulWidget {
 class _TodoScreenState extends State<TodoScreen> {
   final TextEditingController controller = TextEditingController();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   todoList.add(todo);
-  // }
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<TodoList>(context, listen: false).refresh();
+  }
 
   @override
   void dispose() {
@@ -38,24 +38,12 @@ class _TodoScreenState extends State<TodoScreen> {
         isComplete: false,
       ),
     );
-    // setState(() {
-    //   todoList.add(
-    //     Todo(
-    //       id: DateTime.now().toString(), // quick unique-ish id for now
-    //       title: text,
-    //       isComplete: false,
-    //     ),
-    //   );
-    // });
     controller.clear();
   }
 
   void editTodo(Todo todo, String newTitle) {
     todo.title = newTitle;
     Provider.of<TodoList>(context, listen: false).update(todo);
-    // setState(() {
-    //   todo.title = newTitle;
-    // });
   }
 
   void handleToggle(Todo todo) {
@@ -66,22 +54,13 @@ class _TodoScreenState extends State<TodoScreen> {
 
   void deleteItem(Todo todo) {
     Provider.of<TodoList>(context, listen: false).delete(todo);
-    // setState(() {
-    //   todoList.remove(todo);
-    // });
   }
 
   void onTap(Todo todo) async {
-    final result = await Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => TodoDetailScreen(todo: todo)),
     );
-    if (result != null) {
-      setState(() {
-        todo.title = result['title'];
-        todo.description = result['description'];
-      });
-    }
   }
 
   @override

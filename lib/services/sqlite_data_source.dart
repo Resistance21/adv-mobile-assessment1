@@ -49,8 +49,8 @@ class SqliteDataSource implements DataSource {
     Map<String, dynamic> todo = model.toMap();
     int result = await _database.delete(
       'todos',
-      where: 'id',
-      whereArgs: todo['id'],
+      where: 'id = ?',
+      whereArgs: [todo['id']],
     );
     return result > 0;
   }
@@ -61,15 +61,19 @@ class SqliteDataSource implements DataSource {
     int result = await _database.update(
       'todos',
       todo,
-      where: 'id',
-      whereArgs: todo['id'],
+      where: 'id = ?',
+      whereArgs: [todo['id']],
     );
     return result > 0;
   }
 
   @override
   Future<Todo?> read(String id) async {
-    final todo = await _database.query('todos', where: 'id', whereArgs: [id]);
+    final todo = await _database.query(
+      'todos',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
     return todo.isEmpty ? null : Todo.fromMap(todo[0]);
   }
 }

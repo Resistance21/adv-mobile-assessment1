@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_list/models/todo.dart';
+import 'package:todo_list/models/todo_list.dart';
 
 class TodoDetailScreen extends StatefulWidget {
   final Todo todo;
@@ -31,9 +33,12 @@ class _TodoDetailScreenState extends State<TodoDetailScreen> {
   }
 
   void saveChanges() {
+    widget.todo.description = discriptionController.text;
+    widget.todo.title = titleController.text;
+    Provider.of<TodoList>(context, listen: false).update(widget.todo);
     Navigator.pop(context, {
-      'title': titleController.text,
-      'description': discriptionController.text,
+      // 'title': titleController.text,
+      // 'description': discriptionController.text,
     });
   }
 
