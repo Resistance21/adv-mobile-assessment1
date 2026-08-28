@@ -1,8 +1,15 @@
+import 'package:hive/hive.dart';
+
+@HiveType(typeId: 0)
 class Todo {
+  @HiveField(0)
   String id;
+  @HiveField(1)
   String title;
-  bool isComplete;
+  @HiveField(2)
   String description;
+  @HiveField(3)
+  bool isComplete;
 
   Todo({
     required this.id,

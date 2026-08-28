@@ -47,9 +47,8 @@ class _TodoScreenState extends State<TodoScreen> {
   }
 
   void handleToggle(Todo todo) {
-    setState(() {
-      todo.isComplete = !todo.isComplete;
-    });
+    todo.isComplete = !todo.isComplete;
+    Provider.of<TodoList>(context, listen: false).update(todo);
   }
 
   void deleteItem(Todo todo) {
